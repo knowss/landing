@@ -15,7 +15,11 @@ function App() {
       const player = new window.Vimeo.Player(playerRef.current);
       playerRef.current.vimeoPlayer = player;
 
-      // Set volume to 1 (unmuted) but don't autoplay
+      // Explicitly unmute the player on load
+      player.setMuted(false).catch(() => {
+        console.log('Could not unmute on load');
+      });
+
       player.setVolume(1).catch(() => {
         console.log('Could not set volume on load');
       });
@@ -36,7 +40,8 @@ function App() {
     if (playerRef.current?.vimeoPlayer) {
       const paused = await playerRef.current.vimeoPlayer.getPaused();
       if (paused) {
-        // Always ensure volume is 1 (unmuted) when playing
+        // Always ensure video is unmuted when playing
+        await playerRef.current.vimeoPlayer.setMuted(false);
         await playerRef.current.vimeoPlayer.setVolume(1);
         setIsMuted(false);
         await playerRef.current.vimeoPlayer.play();
@@ -50,13 +55,14 @@ function App() {
 
   const toggleMute = async () => {
     if (playerRef.current?.vimeoPlayer) {
-      const volume = await playerRef.current.vimeoPlayer.getVolume();
-      if (volume > 0) {
-        playerRef.current.vimeoPlayer.setVolume(0);
-        setIsMuted(true);
-      } else {
-        playerRef.current.vimeoPlayer.setVolume(1);
+      const muted = await playerRef.current.vimeoPlayer.getMuted();
+      if (muted) {
+        await playerRef.current.vimeoPlayer.setMuted(false);
+        await playerRef.current.vimeoPlayer.setVolume(1);
         setIsMuted(false);
+      } else {
+        await playerRef.current.vimeoPlayer.setMuted(true);
+        setIsMuted(true);
       }
     }
   };
@@ -102,7 +108,7 @@ function App() {
               <div className="video-wrapper" onMouseMove={handleInteraction} onTouchStart={handleInteraction} onClick={handleInteraction} onMouseLeave={handleMouseLeave}>
                 <iframe
                   ref={playerRef}
-                  src="https://player.vimeo.com/video/1129379665?loop=1&autopause=0&byline=0&title=0&controls=0"
+                  src="https://player.vimeo.com/video/1129379665?loop=1&muted=0&autopause=0&byline=0&title=0&controls=0"
                   frameBorder="0"
                   allow="autoplay; fullscreen; picture-in-picture"
                   style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
