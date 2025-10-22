@@ -3,9 +3,9 @@ import './App.css';
 
 function App() {
   const [copied, setCopied] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [showControls, setShowControls] = useState(false);
+  const [showControls, setShowControls] = useState(true);
   const playerRef = useRef(null);
   const hideControlsTimer = useRef(null);
   const hasInteracted = useRef(false);
@@ -15,24 +15,14 @@ function App() {
       const player = new window.Vimeo.Player(playerRef.current);
       playerRef.current.vimeoPlayer = player;
 
-      // Try to unmute and play with sound
+      // Set volume to 1 (unmuted) but don't autoplay
       player.setVolume(1).catch(() => {
-        // If setting volume fails, might be browser policy
         console.log('Could not set volume on load');
       });
 
-      player.play().catch(() => {
-        console.log('Autoplay failed');
-      });
-
-      // Check actual muted state and sync
-      player.getVolume().then((volume) => {
-        setIsMuted(volume === 0);
-      });
-
-      player.getPaused().then((paused) => {
-        setIsPlaying(!paused);
-      });
+      // Video starts paused, showing play button
+      setIsPlaying(false);
+      setIsMuted(false);
     }
   }, []);
 
@@ -46,6 +36,11 @@ function App() {
     if (playerRef.current?.vimeoPlayer) {
       const paused = await playerRef.current.vimeoPlayer.getPaused();
       if (paused) {
+        // Ensure volume is set on first play
+        if (!hasInteracted.current) {
+          hasInteracted.current = true;
+          await playerRef.current.vimeoPlayer.setVolume(1);
+        }
         playerRef.current.vimeoPlayer.play();
         setIsPlaying(true);
       } else {
@@ -69,31 +64,26 @@ function App() {
   };
 
   const handleInteraction = async () => {
-    // On first interaction, ensure video is unmuted (for browser autoplay policies)
-    if (!hasInteracted.current && playerRef.current?.vimeoPlayer) {
-      hasInteracted.current = true;
-      try {
-        await playerRef.current.vimeoPlayer.setVolume(1);
-        const volume = await playerRef.current.vimeoPlayer.getVolume();
-        setIsMuted(volume === 0);
-      } catch (e) {
-        console.log('Could not unmute on first interaction');
-      }
-    }
-
     setShowControls(true);
-    if (hideControlsTimer.current) {
-      clearTimeout(hideControlsTimer.current);
+
+    // Only auto-hide controls if video is playing
+    if (isPlaying) {
+      if (hideControlsTimer.current) {
+        clearTimeout(hideControlsTimer.current);
+      }
+      hideControlsTimer.current = setTimeout(() => {
+        setShowControls(false);
+      }, 2000);
     }
-    hideControlsTimer.current = setTimeout(() => {
-      setShowControls(false);
-    }, 2000);
   };
 
   const handleMouseLeave = () => {
-    setShowControls(false);
-    if (hideControlsTimer.current) {
-      clearTimeout(hideControlsTimer.current);
+    // Only hide controls on mouse leave if video is playing
+    if (isPlaying) {
+      setShowControls(false);
+      if (hideControlsTimer.current) {
+        clearTimeout(hideControlsTimer.current);
+      }
     }
   };
 
@@ -114,7 +104,7 @@ function App() {
               <div className="video-wrapper" onMouseMove={handleInteraction} onTouchStart={handleInteraction} onClick={handleInteraction} onMouseLeave={handleMouseLeave}>
                 <iframe
                   ref={playerRef}
-                  src="https://player.vimeo.com/video/1129379665?autoplay=1&loop=1&muted=0&byline=0&title=0&controls=0"
+                  src="https://player.vimeo.com/video/1129379665?loop=1&autopause=0&byline=0&title=0&controls=0"
                   frameBorder="0"
                   allow="autoplay; fullscreen; picture-in-picture"
                   style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
