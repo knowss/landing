@@ -273,7 +273,8 @@ body {
   max-height: 45vh;
 }
 
-.video-wrapper video {
+.video-wrapper video,
+.video-wrapper iframe {
   position: absolute;
   top: 0;
   left: 0;

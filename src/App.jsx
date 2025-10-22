@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import './App.css';
 
 function App() {
@@ -6,8 +6,19 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
   const [showControls, setShowControls] = useState(false);
-  const videoRef = useRef(null);
+  const playerRef = useRef(null);
   const hideControlsTimer = useRef(null);
+
+  useEffect(() => {
+    if (window.Vimeo && playerRef.current) {
+      const player = new window.Vimeo.Player(playerRef.current);
+      playerRef.current.vimeoPlayer = player;
+
+      // Set initial state
+      player.setVolume(1);
+      player.play();
+    }
+  }, []);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText('apply@knows.app');
@@ -15,22 +26,29 @@ function App() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const togglePlay = () => {
-    if (videoRef.current) {
-      if (videoRef.current.paused) {
-        videoRef.current.play();
+  const togglePlay = async () => {
+    if (playerRef.current?.vimeoPlayer) {
+      const paused = await playerRef.current.vimeoPlayer.getPaused();
+      if (paused) {
+        playerRef.current.vimeoPlayer.play();
         setIsPlaying(true);
       } else {
-        videoRef.current.pause();
+        playerRef.current.vimeoPlayer.pause();
         setIsPlaying(false);
       }
     }
   };
 
-  const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setIsMuted(!isMuted);
+  const toggleMute = async () => {
+    if (playerRef.current?.vimeoPlayer) {
+      const volume = await playerRef.current.vimeoPlayer.getVolume();
+      if (volume > 0) {
+        playerRef.current.vimeoPlayer.setVolume(0);
+        setIsMuted(true);
+      } else {
+        playerRef.current.vimeoPlayer.setVolume(1);
+        setIsMuted(false);
+      }
     }
   };
 
@@ -66,10 +84,13 @@ function App() {
           <div className="video-container">
             <div className="video-frame">
               <div className="video-wrapper" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
-                <video ref={videoRef} autoPlay loop playsInline>
-                  <source src="/video.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+                <iframe
+                  ref={playerRef}
+                  src="https://player.vimeo.com/video/1129379665?background=1&autoplay=1&loop=1&byline=0&title=0&controls=0"
+                  frameBorder="0"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                ></iframe>
                 <div className={`video-controls ${showControls ? 'visible' : ''}`}>
                   <button className="play-btn" onClick={togglePlay}>
                     {isPlaying ? (
