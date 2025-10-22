@@ -1,0 +1,800 @@
+@font-face {
+  font-family: 'Readex Pro';
+  src: url('/font/ReadexPro-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Readex Pro';
+  src: url('/font/ReadexPro-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Readex Pro';
+  src: url('/font/ReadexPro-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Readex Pro';
+  src: url('/font/ReadexPro-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Readex Pro';
+  src: url('/font/ReadexPro-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Readex Pro';
+  src: url('/font/ReadexPro-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Readex Pro', sans-serif;
+  background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #1a0a1a 100%);
+  overflow: hidden;
+}
+
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.app::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(138, 43, 226, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0 clamp(10px, 2vw, 20px);
+  position: relative;
+  z-index: 1;
+  max-height: 100vh;
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: clamp(20px, 4vh, 60px) clamp(15px, 3vw, 60px) clamp(15px, 2.5vh, 40px);
+  flex-shrink: 0;
+  max-width: min(900px, 95vw);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hero h1 {
+  font-size: clamp(28px, 4.8vw, 72px);
+  font-weight: 500;
+  line-height: 1.25;
+  color: #ffffff;
+  letter-spacing: -0.025em;
+  word-wrap: break-word;
+  hyphens: auto;
+  max-width: 100%;
+}
+
+/* CTA Section */
+.cta-section {
+  text-align: center;
+  padding: clamp(20px, 3vh, 40px) clamp(15px, 3vw, 60px) clamp(30px, 4vh, 60px);
+  flex-shrink: 0;
+  max-width: min(900px, 95vw);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.cta-section p {
+  font-size: clamp(14px, 1.3vw, 20px);
+  color: #a0a0a0;
+  margin-bottom: clamp(20px, 3vh, 40px);
+  line-height: 1.6;
+  font-weight: 300;
+  max-width: min(640px, 90vw);
+  margin-left: auto;
+  margin-right: auto;
+  word-wrap: break-word;
+}
+
+.signup-btn {
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  padding: clamp(14px, 2vh, 18px) clamp(28px, 4vw, 48px);
+  font-size: clamp(13px, 1.1vw, 16px);
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(255, 255, 255, 0.18);
+  min-width: 200px;
+}
+
+.signup-btn:hover {
+  background-color: #f5f5f5;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.28);
+}
+
+/* Video Section */
+.video-section {
+  flex: 0 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  padding: 0 clamp(20px, 4vw, 80px) clamp(20px, 3vh, 40px);
+  min-height: 0;
+  overflow: visible;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  max-width: min(1000px, 92vw);
+  padding: 0;
+  margin: 0 auto;
+  flex-shrink: 1;
+}
+
+/* Responsive video sizing based on viewport */
+@media (min-width: 2000px) {
+  .video-container {
+    max-width: 1400px;
+  }
+
+  .hero {
+    max-width: 1100px;
+  }
+
+  .hero h1 {
+    font-size: clamp(56px, 4vw, 80px);
+  }
+
+  .hero p {
+    font-size: clamp(18px, 1.2vw, 22px);
+  }
+}
+
+@media (min-width: 1600px) and (max-width: 1999px) {
+  .video-container {
+    max-width: 1200px;
+  }
+
+  .hero {
+    max-width: 1000px;
+  }
+
+  .hero h1 {
+    font-size: clamp(48px, 4.2vw, 76px);
+  }
+}
+
+@media (min-width: 1400px) and (max-width: 1599px) {
+  .video-container {
+    max-width: 1100px;
+  }
+
+  .hero h1 {
+    font-size: clamp(40px, 4.5vw, 68px);
+  }
+}
+
+@media (max-height: 800px) {
+  .video-container {
+    max-width: min(950px, 88vw);
+  }
+}
+
+@media (max-height: 700px) {
+  .video-section {
+    padding: 0 clamp(20px, 4vw, 60px) clamp(40px, 6vh, 70px);
+  }
+
+  .video-container {
+    max-width: min(900px, 86vw);
+  }
+}
+
+@media (max-height: 600px) {
+  .video-section {
+    padding: 0 clamp(20px, 3vw, 50px) clamp(35px, 5vh, 60px);
+  }
+
+  .video-container {
+    max-width: min(850px, 85vw);
+  }
+}
+
+@media (max-height: 500px) {
+  .video-section {
+    padding: 0 clamp(15px, 3vw, 40px) clamp(30px, 4vh, 50px);
+  }
+
+  .video-container {
+    max-width: min(800px, 84vw);
+  }
+}
+
+.video-frame {
+  background: rgba(20, 20, 25, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+              0 0 80px rgba(138, 43, 226, 0.15);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: #000;
+  overflow: hidden;
+  max-height: 45vh;
+}
+
+.video-wrapper video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.video-controls {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: clamp(12px, 2vw, 20px);
+  align-items: center;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.video-controls.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.play-btn, .mute-btn {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  width: clamp(50px, 8vw, 70px);
+  height: clamp(50px, 8vw, 70px);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.play-btn svg, .mute-btn svg {
+  width: clamp(20px, 3vw, 28px);
+  height: clamp(20px, 3vw, 28px);
+}
+
+.play-btn:hover, .mute-btn:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.05);
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.5);
+}
+
+/* Grid decorations - hidden for modern design */
+.grid-decoration {
+  display: none;
+}
+
+.grid-left {
+  display: none;
+}
+
+.grid-right {
+  display: none;
+}
+
+/* Tablet and Mobile */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .hero {
+    max-width: min(850px, 93vw);
+  }
+
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 64px);
+  }
+
+  .video-container {
+    max-width: min(920px, 90vw);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: clamp(18px, 3.5vh, 38px) clamp(15px, 3vw, 30px) clamp(12px, 2.2vh, 26px);
+  }
+
+  .hero h1 {
+    font-size: clamp(26px, 7vw, 50px);
+    line-height: 1.3;
+  }
+
+  .video-section {
+    padding: 0 clamp(15px, 2.5vw, 30px) clamp(20px, 3.5vh, 40px);
+  }
+
+  .video-container {
+    padding: 0;
+    max-width: min(700px, 92vw);
+  }
+
+  .cta-section {
+    padding: clamp(15px, 2.5vh, 32px) clamp(15px, 3vw, 30px) clamp(28px, 4vh, 48px);
+  }
+
+  .video-controls {
+    gap: clamp(10px, 1.8vw, 16px);
+  }
+
+  .play-btn, .mute-btn {
+    width: clamp(45px, 7vw, 60px);
+    height: clamp(45px, 7vw, 60px);
+  }
+
+  .play-btn svg, .mute-btn svg {
+    width: clamp(18px, 2.6vw, 24px);
+    height: clamp(18px, 2.6vw, 24px);
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding: clamp(16px, 3.2vh, 32px) clamp(12px, 2.8vw, 26px) clamp(10px, 2vh, 22px);
+  }
+
+  .hero h1 {
+    font-size: clamp(24px, 6.5vw, 44px);
+    line-height: 1.32;
+  }
+
+  .video-section {
+    padding: 0 clamp(12px, 2.2vw, 26px) clamp(18px, 3.2vh, 36px);
+  }
+
+  .video-container {
+    max-width: min(600px, 93vw);
+  }
+
+  .cta-section {
+    padding: clamp(14px, 2.3vh, 28px) clamp(12px, 2.8vw, 26px) clamp(25px, 3.8vh, 42px);
+  }
+
+  .cta-section p {
+    font-size: clamp(13px, 3.2vw, 18px);
+    margin-bottom: clamp(18px, 2.8vh, 32px);
+  }
+
+  .signup-btn {
+    padding: clamp(11px, 1.7vh, 15px) clamp(22px, 3.3vw, 38px);
+    font-size: clamp(11px, 1vw, 14px);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: clamp(15px, 2.8vh, 26px) clamp(10px, 2.2vw, 20px) clamp(10px, 1.8vh, 20px);
+    max-width: min(480px, 96vw);
+  }
+
+  .hero h1 {
+    font-size: clamp(22px, 6vw, 40px);
+    line-height: 1.35;
+  }
+
+  .video-section {
+    padding: 0 clamp(10px, 1.8vw, 20px) clamp(15px, 2.8vh, 32px);
+  }
+
+  .video-container {
+    padding: 0;
+    max-width: min(480px, 94vw);
+  }
+
+  .cta-section {
+    padding: clamp(12px, 2.2vh, 26px) clamp(10px, 2.2vw, 20px) clamp(25px, 3.5vh, 38px);
+    max-width: min(480px, 96vw);
+  }
+
+  .cta-section p {
+    font-size: clamp(12px, 3vw, 16px);
+    margin-bottom: clamp(14px, 2.5vh, 24px);
+    line-height: 1.55;
+  }
+
+  .signup-btn {
+    padding: clamp(11px, 1.7vh, 15px) clamp(22px, 3.2vw, 38px);
+    font-size: clamp(11px, 1vw, 14px);
+    min-width: 170px;
+  }
+
+  .video-controls {
+    gap: clamp(8px, 1.5vw, 14px);
+  }
+
+  .play-btn, .mute-btn {
+    width: clamp(40px, 6vw, 52px);
+    height: clamp(40px, 6vw, 52px);
+  }
+
+  .play-btn svg, .mute-btn svg {
+    width: clamp(15px, 2.2vw, 20px);
+    height: clamp(15px, 2.2vw, 20px);
+  }
+}
+
+@media (max-width: 375px) {
+  .hero {
+    padding: clamp(13px, 2.5vh, 22px) clamp(8px, 1.8vw, 16px) clamp(8px, 1.6vh, 16px);
+    max-width: min(375px, 97vw);
+  }
+
+  .hero h1 {
+    font-size: clamp(20px, 5.8vw, 34px);
+    line-height: 1.38;
+  }
+
+  .video-section {
+    padding: 0 clamp(8px, 1.6vw, 18px) clamp(12px, 2.5vh, 28px);
+  }
+
+  .video-container {
+    max-width: min(375px, 96vw);
+  }
+
+  .cta-section {
+    padding: clamp(10px, 2vh, 22px) clamp(8px, 1.8vw, 16px) clamp(22px, 3.2vh, 32px);
+    max-width: min(375px, 97vw);
+  }
+
+  .cta-section p {
+    font-size: clamp(11px, 2.9vw, 14px);
+    margin-bottom: clamp(12px, 2.2vh, 20px);
+  }
+
+  .signup-btn {
+    padding: clamp(10px, 1.5vh, 13px) clamp(18px, 3vw, 34px);
+    font-size: clamp(10px, 0.9vw, 13px);
+    min-width: 155px;
+  }
+
+  .play-btn, .mute-btn {
+    width: clamp(36px, 5.5vw, 48px);
+    height: clamp(36px, 5.5vw, 48px);
+  }
+
+  .play-btn svg, .mute-btn svg {
+    width: clamp(13px, 2vw, 18px);
+    height: clamp(13px, 2vw, 18px);
+  }
+}
+
+@media (max-width: 320px) {
+  .hero {
+    padding: clamp(12px, 2.5vh, 20px) clamp(8px, 1.8vw, 15px) clamp(8px, 1.6vh, 15px);
+    max-width: min(320px, 98vw);
+  }
+
+  .hero h1 {
+    font-size: clamp(20px, 5.8vw, 32px);
+  }
+
+  .cta-section {
+    padding: clamp(15px, 2.5vh, 22px) clamp(8px, 1.8vw, 15px) clamp(25px, 3.5vh, 32px);
+    max-width: min(320px, 98vw);
+  }
+
+  .cta-section p {
+    font-size: clamp(11px, 3vw, 14px);
+    margin-bottom: clamp(12px, 2.2vh, 20px);
+  }
+
+  .signup-btn {
+    padding: clamp(9px, 1.4vh, 12px) clamp(18px, 3vw, 32px);
+    font-size: clamp(10px, 0.9vw, 13px);
+    min-width: 140px;
+  }
+
+  .video-container {
+    max-width: min(320px, 97vw);
+  }
+
+  .play-btn, .mute-btn {
+    width: clamp(35px, 5.5vw, 46px);
+    height: clamp(35px, 5.5vw, 46px);
+  }
+
+  .play-btn svg, .mute-btn svg {
+    width: clamp(13px, 2vw, 18px);
+    height: clamp(13px, 2vw, 18px);
+  }
+}
+
+/* Short screens */
+@media (max-height: 900px) {
+  .video-wrapper {
+    max-height: 42vh;
+  }
+}
+
+@media (max-height: 800px) {
+  .hero {
+    padding: clamp(18px, 2.5vh, 35px) clamp(15px, 3vw, 40px) clamp(12px, 1.8vh, 25px);
+  }
+
+  .video-section {
+    padding: 0 clamp(20px, 4vw, 60px) clamp(15px, 2.5vh, 30px);
+  }
+
+  .video-wrapper {
+    max-height: 40vh;
+  }
+
+  .cta-section {
+    padding: clamp(15px, 2.2vh, 30px) clamp(15px, 3vw, 40px) clamp(25px, 3.5vh, 45px);
+  }
+}
+
+@media (max-height: 700px) {
+  .hero {
+    padding: clamp(15px, 2vh, 28px) clamp(15px, 3vw, 30px) clamp(10px, 1.5vh, 20px);
+  }
+
+  .hero h1 {
+    font-size: clamp(24px, 4.2vh, 48px);
+  }
+
+  .video-section {
+    padding: 0 clamp(18px, 3.5vw, 50px) clamp(12px, 2vh, 25px);
+  }
+
+  .video-wrapper {
+    max-height: 35vh;
+  }
+
+  .cta-section {
+    padding: clamp(12px, 1.8vh, 22px) clamp(15px, 3vw, 30px) clamp(20px, 2.8vh, 32px);
+  }
+
+  .cta-section p {
+    font-size: clamp(12px, 1.9vh, 16px);
+    margin-bottom: clamp(10px, 1.8vh, 18px);
+  }
+
+  .signup-btn {
+    padding: clamp(10px, 1.5vh, 14px) clamp(20px, 3vw, 35px);
+    font-size: clamp(11px, 1.1vw, 14px);
+  }
+
+  .video-controls {
+    gap: clamp(8px, 1.4vw, 12px);
+  }
+
+  .play-btn, .mute-btn {
+    width: clamp(40px, 6vw, 52px);
+    height: clamp(40px, 6vw, 52px);
+  }
+
+  .play-btn svg, .mute-btn svg {
+    width: clamp(15px, 2.2vw, 20px);
+    height: clamp(15px, 2.2vw, 20px);
+  }
+}
+
+@media (max-height: 600px) {
+  .hero {
+    padding: clamp(12px, 1.8vh, 22px) clamp(15px, 3vw, 28px) clamp(10px, 1.5vh, 18px);
+  }
+
+  .hero h1 {
+    font-size: clamp(22px, 3.8vh, 42px);
+  }
+
+  .video-section {
+    padding: 0 clamp(15px, 3vw, 45px) clamp(10px, 1.8vh, 22px);
+  }
+
+  .video-wrapper {
+    max-height: 30vh;
+  }
+
+  .cta-section {
+    padding: clamp(10px, 1.6vh, 18px) clamp(15px, 3vw, 28px) clamp(18px, 2.5vh, 26px);
+  }
+
+  .cta-section p {
+    font-size: clamp(11px, 1.8vh, 14px);
+    margin-bottom: clamp(8px, 1.5vh, 14px);
+  }
+
+  .signup-btn {
+    padding: clamp(9px, 1.4vh, 13px) clamp(18px, 2.8vw, 32px);
+    font-size: clamp(10px, 1vw, 13px);
+  }
+}
+
+@media (max-height: 500px) {
+  .hero {
+    padding: clamp(10px, 1.5vh, 18px) clamp(12px, 2.5vw, 24px) clamp(8px, 1.2vh, 15px);
+  }
+
+  .hero h1 {
+    font-size: clamp(18px, 3.5vh, 36px);
+  }
+
+  .video-section {
+    padding: 0 clamp(12px, 2.5vw, 35px) clamp(8px, 1.5vh, 18px);
+  }
+
+  .video-wrapper {
+    max-height: 26vh;
+  }
+
+  .cta-section {
+    padding: clamp(8px, 1.4vh, 16px) clamp(12px, 2.5vw, 24px) clamp(15px, 2.2vh, 22px);
+  }
+
+  .cta-section p {
+    font-size: clamp(10px, 1.7vh, 13px);
+    margin-bottom: clamp(6px, 1.3vh, 12px);
+  }
+
+  .signup-btn {
+    padding: clamp(7px, 1.2vh, 11px) clamp(16px, 2.3vw, 28px);
+    font-size: clamp(9px, 0.95vw, 12px);
+  }
+
+  .video-controls {
+    gap: clamp(7px, 1.3vw, 10px);
+  }
+
+  .play-btn, .mute-btn {
+    width: clamp(35px, 5.5vw, 48px);
+    height: clamp(35px, 5.5vw, 48px);
+  }
+
+  .play-btn svg, .mute-btn svg {
+    width: clamp(14px, 2vw, 18px);
+    height: clamp(14px, 2vw, 18px);
+  }
+}
+
+@media (max-height: 400px) {
+  .hero {
+    padding: clamp(8px, 1.3vh, 15px) clamp(10px, 2vw, 18px) clamp(6px, 1vh, 12px);
+  }
+
+  .hero h1 {
+    font-size: clamp(16px, 3.2vh, 30px);
+  }
+
+  .video-section {
+    padding: 0 clamp(10px, 2vw, 28px) clamp(6px, 1.2vh, 15px);
+  }
+
+  .video-wrapper {
+    max-height: 22vh;
+  }
+
+  .cta-section {
+    padding: clamp(6px, 1.2vh, 12px) clamp(10px, 2vw, 18px) clamp(12px, 1.8vh, 18px);
+  }
+
+  .cta-section p {
+    font-size: clamp(9px, 1.6vh, 11px);
+    margin-bottom: clamp(5px, 1.1vh, 10px);
+  }
+
+  .signup-btn {
+    padding: clamp(5px, 1vh, 9px) clamp(14px, 2vw, 22px);
+    font-size: clamp(8px, 0.85vw, 10px);
+  }
+
+  .video-container {
+    max-width: min(750px, 82vw);
+  }
+
+  .video-controls {
+    gap: clamp(6px, 1.2vw, 9px);
+  }
+
+  .play-btn, .mute-btn {
+    width: clamp(32px, 5vw, 44px);
+    height: clamp(32px, 5vw, 44px);
+  }
+
+  .play-btn svg, .mute-btn svg {
+    width: clamp(12px, 1.8vw, 16px);
+    height: clamp(12px, 1.8vw, 16px);
+  }
+}
+
+/* Mobile landscape optimization */
+@media (max-height: 480px) and (orientation: landscape) {
+  .main-content {
+    padding: 0 clamp(8px, 1.5vw, 15px);
+  }
+
+  .hero {
+    padding: clamp(12px, 1.8vh, 20px) clamp(15px, 2.5vw, 25px) clamp(10px, 1.5vh, 18px);
+  }
+
+  .video-section {
+    padding: 0 clamp(15px, 2.5vw, 35px) clamp(8px, 1.5vh, 18px);
+  }
+
+  .video-wrapper {
+    max-height: 28vh;
+  }
+
+  .video-controls {
+    gap: clamp(7px, 1.25vw, 9px);
+  }
+
+  .play-btn, .mute-btn {
+    width: clamp(36px, 5.2vw, 46px);
+    height: clamp(36px, 5.2vw, 46px);
+  }
+
+  .play-btn svg, .mute-btn svg {
+    width: clamp(13px, 1.9vw, 17px);
+    height: clamp(13px, 1.9vw, 17px);
+  }
+}
