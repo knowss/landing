@@ -52,7 +52,7 @@ function App() {
     }
   };
 
-  const handleMouseMove = () => {
+  const handleInteraction = () => {
     setShowControls(true);
     if (hideControlsTimer.current) {
       clearTimeout(hideControlsTimer.current);
@@ -83,7 +83,7 @@ function App() {
           <div className="grid-decoration grid-left"></div>
           <div className="video-container">
             <div className="video-frame">
-              <div className="video-wrapper" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+              <div className="video-wrapper" onMouseMove={handleInteraction} onTouchStart={handleInteraction} onClick={handleInteraction} onMouseLeave={handleMouseLeave}>
                 <iframe
                   ref={playerRef}
                   src="https://player.vimeo.com/video/1129379665?background=1&autoplay=1&loop=1&byline=0&title=0&controls=0"

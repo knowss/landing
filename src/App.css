@@ -46,10 +46,21 @@
   box-sizing: border-box;
 }
 
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   font-family: 'Readex Pro', sans-serif;
   background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #1a0a1a 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
   overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
 
 .app {
@@ -797,5 +808,44 @@ body {
   .play-btn svg, .mute-btn svg {
     width: clamp(13px, 1.9vw, 17px);
     height: clamp(13px, 1.9vw, 17px);
+  }
+}
+
+/* Mobile touch devices */
+@media (max-width: 768px) {
+  html {
+    height: 100%;
+    height: -webkit-fill-available;
+  }
+
+  body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+
+  .app {
+    height: 100vh;
+    height: -webkit-fill-available;
+  }
+
+  .video-controls {
+    gap: clamp(14px, 3vw, 22px);
+  }
+
+  .play-btn, .mute-btn {
+    width: clamp(48px, 12vw, 64px);
+    height: clamp(48px, 12vw, 64px);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .play-btn svg, .mute-btn svg {
+    width: clamp(20px, 5vw, 28px);
+    height: clamp(20px, 5vw, 28px);
+  }
+
+  .video-wrapper {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 }
