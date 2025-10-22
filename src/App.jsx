@@ -15,18 +15,33 @@ function App() {
       const player = new window.Vimeo.Player(playerRef.current);
       playerRef.current.vimeoPlayer = player;
 
-      // Explicitly unmute the player on load
-      player.setMuted(false).catch(() => {
-        console.log('Could not unmute on load');
-      });
+      // Check and sync the actual muted state from Vimeo
+      player.ready().then(() => {
+        player.getMuted().then((muted) => {
+          console.log('Vimeo player muted state:', muted);
+          setIsMuted(muted);
 
-      player.setVolume(1).catch(() => {
-        console.log('Could not set volume on load');
+          // If it's muted, try to unmute it
+          if (muted) {
+            player.setMuted(false).then(() => {
+              player.getMuted().then((nowMuted) => {
+                console.log('After unmute attempt:', nowMuted);
+                setIsMuted(nowMuted);
+              });
+            });
+          }
+        });
+
+        player.getVolume().then((volume) => {
+          console.log('Vimeo player volume:', volume);
+          if (volume === 0) {
+            player.setVolume(1);
+          }
+        });
       });
 
       // Video starts paused, showing play button
       setIsPlaying(false);
-      setIsMuted(false);
     }
   }, []);
 
@@ -43,7 +58,12 @@ function App() {
         // Always ensure video is unmuted when playing
         await playerRef.current.vimeoPlayer.setMuted(false);
         await playerRef.current.vimeoPlayer.setVolume(1);
-        setIsMuted(false);
+
+        // Verify the state was set correctly
+        const actualMuted = await playerRef.current.vimeoPlayer.getMuted();
+        console.log('Play: After setMuted(false), actual muted state:', actualMuted);
+        setIsMuted(actualMuted);
+
         await playerRef.current.vimeoPlayer.play();
         setIsPlaying(true);
       } else {
@@ -56,13 +76,21 @@ function App() {
   const toggleMute = async () => {
     if (playerRef.current?.vimeoPlayer) {
       const muted = await playerRef.current.vimeoPlayer.getMuted();
+      console.log('ToggleMute: Current muted state:', muted);
+
       if (muted) {
+        // Unmute
         await playerRef.current.vimeoPlayer.setMuted(false);
         await playerRef.current.vimeoPlayer.setVolume(1);
-        setIsMuted(false);
+        const newMuted = await playerRef.current.vimeoPlayer.getMuted();
+        console.log('ToggleMute: After unmute, new state:', newMuted);
+        setIsMuted(newMuted);
       } else {
+        // Mute
         await playerRef.current.vimeoPlayer.setMuted(true);
-        setIsMuted(true);
+        const newMuted = await playerRef.current.vimeoPlayer.getMuted();
+        console.log('ToggleMute: After mute, new state:', newMuted);
+        setIsMuted(newMuted);
       }
     }
   };
