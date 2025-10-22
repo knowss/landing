@@ -830,7 +830,6 @@ body {
 
   .video-controls {
     gap: clamp(14px, 3vw, 22px);
-    opacity: 1;
   }
 
   .play-btn, .mute-btn {

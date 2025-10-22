@@ -14,9 +14,13 @@ function App() {
       const player = new window.Vimeo.Player(playerRef.current);
       playerRef.current.vimeoPlayer = player;
 
-      // Set initial state
-      player.setVolume(1);
-      player.play();
+      // Set initial state - unmuted and playing
+      player.setVolume(1).then(() => {
+        setIsMuted(false);
+      });
+      player.play().then(() => {
+        setIsPlaying(true);
+      });
     }
   }, []);
 
@@ -86,7 +90,7 @@ function App() {
               <div className="video-wrapper" onMouseMove={handleInteraction} onTouchStart={handleInteraction} onClick={handleInteraction} onMouseLeave={handleMouseLeave}>
                 <iframe
                   ref={playerRef}
-                  src="https://player.vimeo.com/video/1129379665?background=1&autoplay=1&loop=1&byline=0&title=0&controls=0"
+                  src="https://player.vimeo.com/video/1129379665?autoplay=1&loop=1&muted=0&byline=0&title=0&controls=0"
                   frameBorder="0"
                   allow="autoplay; fullscreen; picture-in-picture"
                   style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
