@@ -143,24 +143,20 @@ function App() {
 
     setShowControls(true);
 
-    // Only auto-hide controls if video is playing
-    if (isPlaying) {
-      if (hideControlsTimer.current) {
-        clearTimeout(hideControlsTimer.current);
-      }
-      hideControlsTimer.current = setTimeout(() => {
-        setShowControls(false);
-      }, 2000);
+    // Auto-hide controls after 2 seconds of inactivity
+    if (hideControlsTimer.current) {
+      clearTimeout(hideControlsTimer.current);
     }
+    hideControlsTimer.current = setTimeout(() => {
+      setShowControls(false);
+    }, 2000);
   };
 
   const handleMouseLeave = () => {
-    // Only hide controls on mouse leave if video is playing
-    if (isPlaying) {
-      setShowControls(false);
-      if (hideControlsTimer.current) {
-        clearTimeout(hideControlsTimer.current);
-      }
+    // Hide controls when mouse leaves the video area
+    setShowControls(false);
+    if (hideControlsTimer.current) {
+      clearTimeout(hideControlsTimer.current);
     }
   };
 
