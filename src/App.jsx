@@ -51,47 +51,44 @@ function App() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const togglePlay = async (e) => {
+  const togglePlay = (e) => {
     // Stop event propagation to prevent triggering handleInteraction
     if (e) {
       e.stopPropagation();
     }
 
     if (playerRef.current?.vimeoPlayer) {
-      const paused = await playerRef.current.vimeoPlayer.getPaused();
-      if (paused) {
-        // On mobile, we need to unmute AFTER user interaction
-        // Do this synchronously before any await that might break the user gesture chain
-        const player = playerRef.current.vimeoPlayer;
+      const player = playerRef.current.vimeoPlayer;
 
-        // Chain all the promises together to maintain user gesture
-        try {
-          await Promise.all([
-            player.setMuted(false),
-            player.setVolume(1)
-          ]);
-
-          // Verify the state was set correctly
-          const actualMuted = await player.getMuted();
-          console.log('Play: After setMuted(false), actual muted state:', actualMuted);
-          setIsMuted(actualMuted);
-
-          await player.play();
-          setIsPlaying(true);
-        } catch (error) {
-          console.error('Error playing video:', error);
-          // Try one more time with explicit play
-          try {
-            await player.play();
+      // Get paused state and handle play/pause
+      player.getPaused().then((paused) => {
+        if (paused) {
+          // CRITICAL: Set volume first, then unmute, then play - all in same user gesture
+          // Do NOT use await to keep this synchronous with user interaction
+          player.setVolume(1).then(() => {
+            return player.setMuted(false);
+          }).then(() => {
+            return player.play();
+          }).then(() => {
+            // Verify the state after everything is done
+            return Promise.all([
+              player.getMuted(),
+              player.getVolume()
+            ]);
+          }).then(([muted, volume]) => {
+            console.log('Play complete - Muted:', muted, 'Volume:', volume);
+            setIsMuted(muted);
             setIsPlaying(true);
-          } catch (e) {
-            console.error('Second play attempt failed:', e);
-          }
+          }).catch((error) => {
+            console.error('Error playing video:', error);
+            setIsPlaying(true); // Set playing state anyway
+          });
+        } else {
+          player.pause().then(() => {
+            setIsPlaying(false);
+          });
         }
-      } else {
-        await playerRef.current.vimeoPlayer.pause();
-        setIsPlaying(false);
-      }
+      });
     }
   };
 
@@ -124,21 +121,23 @@ function App() {
     }
   };
 
-  const handleInteraction = async () => {
+  const handleInteraction = () => {
     // On first interaction on mobile, ensure unmute
     if (!hasInteracted.current && playerRef.current?.vimeoPlayer) {
       hasInteracted.current = true;
-      try {
-        await Promise.all([
-          playerRef.current.vimeoPlayer.setMuted(false),
-          playerRef.current.vimeoPlayer.setVolume(1)
-        ]);
-        const actualMuted = await playerRef.current.vimeoPlayer.getMuted();
+      const player = playerRef.current.vimeoPlayer;
+
+      // Chain promises to maintain user gesture
+      player.setVolume(1).then(() => {
+        return player.setMuted(false);
+      }).then(() => {
+        return player.getMuted();
+      }).then((actualMuted) => {
         console.log('First interaction: Unmuted state:', actualMuted);
         setIsMuted(actualMuted);
-      } catch (e) {
+      }).catch((e) => {
         console.log('Could not unmute on first interaction:', e);
-      }
+      });
     }
 
     setShowControls(true);
@@ -177,10 +176,11 @@ function App() {
               <div className="video-wrapper" onMouseMove={handleInteraction} onTouchStart={handleInteraction} onClick={handleInteraction} onMouseLeave={handleMouseLeave}>
                 <iframe
                   ref={playerRef}
-                  src="https://player.vimeo.com/video/1129379665?loop=1&muted=0&autopause=0&byline=0&title=0&controls=0"
+                  src="https://player.vimeo.com/video/1129379665?loop=1&muted=0&autopause=0&byline=0&title=0&controls=0&playsinline=1"
                   frameBorder="0"
                   allow="autoplay; fullscreen; picture-in-picture; encrypted-media; accelerometer; gyroscope"
                   allowFullScreen
+                  playsInline
                   style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
                 ></iframe>
                 <div className={`video-controls ${showControls ? 'visible' : ''}`}>
