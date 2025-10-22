@@ -8,18 +8,30 @@ function App() {
   const [showControls, setShowControls] = useState(false);
   const playerRef = useRef(null);
   const hideControlsTimer = useRef(null);
+  const hasInteracted = useRef(false);
 
   useEffect(() => {
     if (window.Vimeo && playerRef.current) {
       const player = new window.Vimeo.Player(playerRef.current);
       playerRef.current.vimeoPlayer = player;
 
-      // Set initial state - unmuted and playing
-      player.setVolume(1).then(() => {
-        setIsMuted(false);
+      // Try to unmute and play with sound
+      player.setVolume(1).catch(() => {
+        // If setting volume fails, might be browser policy
+        console.log('Could not set volume on load');
       });
-      player.play().then(() => {
-        setIsPlaying(true);
+
+      player.play().catch(() => {
+        console.log('Autoplay failed');
+      });
+
+      // Check actual muted state and sync
+      player.getVolume().then((volume) => {
+        setIsMuted(volume === 0);
+      });
+
+      player.getPaused().then((paused) => {
+        setIsPlaying(!paused);
       });
     }
   }, []);
@@ -56,7 +68,19 @@ function App() {
     }
   };
 
-  const handleInteraction = () => {
+  const handleInteraction = async () => {
+    // On first interaction, ensure video is unmuted (for browser autoplay policies)
+    if (!hasInteracted.current && playerRef.current?.vimeoPlayer) {
+      hasInteracted.current = true;
+      try {
+        await playerRef.current.vimeoPlayer.setVolume(1);
+        const volume = await playerRef.current.vimeoPlayer.getVolume();
+        setIsMuted(volume === 0);
+      } catch (e) {
+        console.log('Could not unmute on first interaction');
+      }
+    }
+
     setShowControls(true);
     if (hideControlsTimer.current) {
       clearTimeout(hideControlsTimer.current);
