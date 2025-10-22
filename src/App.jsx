@@ -36,15 +36,13 @@ function App() {
     if (playerRef.current?.vimeoPlayer) {
       const paused = await playerRef.current.vimeoPlayer.getPaused();
       if (paused) {
-        // Ensure volume is set on first play
-        if (!hasInteracted.current) {
-          hasInteracted.current = true;
-          await playerRef.current.vimeoPlayer.setVolume(1);
-        }
-        playerRef.current.vimeoPlayer.play();
+        // Always ensure volume is 1 (unmuted) when playing
+        await playerRef.current.vimeoPlayer.setVolume(1);
+        setIsMuted(false);
+        await playerRef.current.vimeoPlayer.play();
         setIsPlaying(true);
       } else {
-        playerRef.current.vimeoPlayer.pause();
+        await playerRef.current.vimeoPlayer.pause();
         setIsPlaying(false);
       }
     }
