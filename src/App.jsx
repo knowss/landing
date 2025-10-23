@@ -176,7 +176,7 @@ function App() {
               <div className="video-wrapper" onMouseMove={handleInteraction} onTouchStart={handleInteraction} onClick={handleInteraction} onMouseLeave={handleMouseLeave}>
                 <iframe
                   ref={playerRef}
-                  src="https://player.vimeo.com/video/1129379665?loop=1&muted=0&autopause=0&byline=0&title=0&controls=0&playsinline=1"
+                  src="https://player.vimeo.com/video/1129824730?loop=1&muted=0&autopause=0&byline=0&title=0&controls=0&playsinline=1"
                   frameBorder="0"
                   allow="autoplay; fullscreen; picture-in-picture; encrypted-media; accelerometer; gyroscope"
                   allowFullScreen
