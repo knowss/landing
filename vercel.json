@@ -1,5 +1,12 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "framework": "vite"
+  "framework": "vite",
+  "redirects": [
+    {
+      "source": "/memo",
+      "destination": "https://dark-pluto-917.notion.site/Knows-Inc-Memo-2dcc7e73f71b80daa6f3ef4158b0629b",
+      "permanent": true
+    }
+  ]
 }
